@@ -1,24 +1,28 @@
-# Nestjs specific
-/dist
-/node_modules
-/build
-/tmp
+# 의존성 캐시 및 빌드 결과물
+node_modules/
+dist/
+.env
 
-# Logs
-logs
+# Yarn Berry 관련 파일
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# 로그 파일
 *.log
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
 
-# dotenv environment variable files
-.env
-.env.development
-.env.test
-.env.production
+# OS 및 에디터 관련 파일
+.DS_Store
+.vscode/
 
-# temp directory
-.temp
-.tmp
+# 테스트 관련 파일
+/coverage
+
+# 임시 파일
+*.tmp
