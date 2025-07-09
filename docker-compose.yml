@@ -1,0 +1,22 @@
+# docker-compose.yml 파일 내용
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine # PostgreSQL 이미지 (alpine 버전은 경량화된 이미지)
+    container_name: my_nest_postgres_db # 컨테이너 이름 지정 (선택 사항이지만 명확성을 위해 권장)
+    restart: always # 컨테이너 종료 시 항상 재시작
+    env_file:
+      - ./.env # 현재 디렉토리의 .env 파일을 환경 변수로 로드
+    environment: # env_file에서 로드된 변수를 여기에서 재정의하거나 추가할 수 있습니다.
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: ${PGDATA} # 데이터 저장 경로 지정
+    ports:
+      - "5433:5432" # 로컬 포트:컨테이너 포트
+    volumes:
+      - pg_data:/var/lib/postgresql/data # 데이터 영속성을 위한 볼륨 마운트
+
+volumes:
+  pg_data: # PostgreSQL 데이터가 저장될 Docker 볼륨 정의
