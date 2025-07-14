@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'; // TypeOrmModuleOptions 임포트 추가
+import { PostsModule } from './modules/posts/posts.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'; // TypeOr
         return dbConfig;
       },
     }),
+      PostsModule
   ],
   controllers: [AppController],
   providers: [AppService],
