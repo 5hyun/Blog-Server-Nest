@@ -1,98 +1,128 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+NestJS 블로그 서버 API
+📝 프로젝트 개요
+이 프로젝트는 NestJS 프레임워크를 기반으로 구축된 블로그용 백엔드 서버입니다. TypeORM을 사용하여 PostgreSQL 데이터베이스와 상호작용하며, 게시물(Post)에 대한 CRUD (생성, 조회, 수정, 삭제) API를 제공합니다.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+또한, Swagger (OpenAPI) 를 연동하여 API 명세를 자동으로 문서화하고, 개발자들이 API를 쉽게 테스트하고 이해할 수 있는 환경을 제공합니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+✨ 주요 기술 스택
+Framework: NestJS
 
-## Description
+Database: PostgreSQL
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ORM: TypeORM
 
-## Project setup
+API Documentation: Swagger (OpenAPI)
 
-```bash
-$ yarn install
-```
+Validation: class-validator, class-transformer
 
-## Compile and run the project
+Containerization: Docker
 
-```bash
-# development
-$ yarn run start
+🌊 API 처리 흐름 (Request Flow)
+클라이언트의 요청부터 응답까지의 전체적인 데이터 흐름은 다음과 같습니다.
 
-# watch mode
-$ yarn run start:dev
+클라이언트 요청 (Client Request)
 
-# production mode
-$ yarn run start:prod
-```
+클라이언트(웹 브라우저, 모바일 앱 등)가 특정 API 엔드포인트로 HTTP 요청을 보냅니다. (예: POST /posts)
 
-## Run tests
+컨트롤러 (Controller) - posts.controller.ts
 
-```bash
-# unit tests
-$ yarn run test
+NestJS의 라우팅 메커니즘이 요청된 URL과 HTTP 메서드에 맞는 핸들러 함수를 호출합니다.
 
-# e2e tests
-$ yarn run test:e2e
+@Body(), @Param(), @Query() 등의 데코레이터를 사용하여 요청 데이터를 DTO(Data Transfer Object)로 변환하고 유효성을 검사합니다.
 
-# test coverage
-$ yarn run test:cov
-```
+서비스 (Service) - posts.service.ts
 
-## Deployment
+컨트롤러는 비즈니스 로직 처리를 서비스에 위임합니다.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+서비스는 데이터베이스와 상호작용하거나, 필요한 비즈니스 로직(예: 조회수 증가, 데이터 가공)을 수행합니다.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+특히, HTML 콘텐츠가 포함된 경우 sanitize-html 라이브러리를 사용하여 XSS(Cross-Site Scripting) 공격을 방지하기 위한 살균(Sanitization) 처리를 수행합니다.
 
-```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
-```
+리포지토리 (Repository) & 엔티티 (Entity) - posts.entity.ts
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+서비스는 TypeORM의 리포지토리 패턴을 사용하여 데이터베이스와 통신합니다.
 
-## Resources
+Post 엔티티는 데이터베이스의 posts 테이블과 매핑되는 객체이며, 서비스와 리포지토리 사이에서 데이터를 주고받는 데 사용됩니다.
 
-Check out a few resources that may come in handy when working with NestJS:
+데이터베이스 (Database)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+리포지토리를 통해 실행된 쿼리가 PostgreSQL 데이터베이스에서 처리됩니다.
 
-## Support
+클라이언트 응답 (Client Response)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+처리 결과 데이터는 다시 서비스를 거쳐 컨트롤러로 반환됩니다.
 
-## Stay in touch
+컨트롤러는 이 데이터를 클라이언트에게 HTTP 응답으로 전송합니다. (주로 JSON 형식)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+🚀 API 엔드포인트 명세
+basePath: /posts
 
-## License
+기능
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+HTTP Method
+
+URL
+
+요청 Body (DTO)
+
+설명
+
+게시물 생성
+
+POST
+
+/
+
+CreatePostDto
+
+새로운 게시물을 생성합니다.
+
+전체 조회
+
+GET
+
+/
+
+-
+
+모든 게시물 목록을 조회합니다.
+
+상세 조회
+
+GET
+
+/:id
+
+-
+
+특정 ID의 게시물을 상세 조회하고, 조회수를 1 증가시킵니다.
+
+게시물 수정
+
+PATCH
+
+/:id
+
+UpdatePostDto
+
+특정 ID의 게시물을 수정합니다. (부분 업데이트 지원)
+
+게시물 삭제
+
+DELETE
+
+/:id
+
+-
+
+특정 ID의 게시물을 삭제합니다.
+
+DTO (Data Transfer Object)
+CreatePostDto: 게시물 생성을 위해 클라이언트로부터 받는 데이터 모델입니다. title, content, authorId 필드를 포함합니다.
+
+UpdatePostDto: 게시물 수정을 위해 사용되며, CreatePostDto의 모든 필드를 선택적으로 가집니다.
+
+API 문서 확인
+애플리케이션을 실행한 후, 아래 주소에서 상세한 API 명세와 테스트 UI를 확인할 수 있습니다.
+
+Swagger UI: http://localhost:3000/api-docs

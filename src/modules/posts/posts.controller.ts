@@ -6,52 +6,46 @@ import {
     Body,
     HttpCode,
     HttpStatus,
-    ValidationPipe,
-    Param, // Param 데코레이터 임포트
-    NotFoundException, // NotFoundException 임포트
+    Param,
+    NotFoundException,
     Patch,
     Delete
 } from '@nestjs/common';
-import { PostsService } from './posts.service'; // PostsService 임포트
-import { CreatePostDto } from './dto/create-post.dto'; // CreatePostDto 임포트
+import { PostsService } from './posts.service';
+import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { Post as PostEntity } from './posts.entity'; // Post 엔티티 임포트 (이름 충돌 방지 별칭)
+import { Post as PostEntity } from './posts.entity';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 
-@Controller('posts') // 기본 경로를 'posts'로 설정
+@ApiTags('posts') // 이 컨트롤러의 API들을 'posts' 태그로 그룹화합니다.
+@Controller('posts')
 export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
-    /**
-     * 새로운 블로그 게시물을 생성하는 API 엔드포인트입니다.
-     * @param createPostDto 블로그 생성 데이터
-     * @returns 생성된 블로그 게시물 객체
-     */
-    @HttpPost() // POST 메서드 사용
-    @HttpCode(HttpStatus.CREATED) // 성공 시 201 Created 응답
+    @ApiOperation({ summary: '새 게시물 생성', description: '새로운 블로그 게시물을 생성합니다.' })
+    @ApiResponse({ status: 201, description: '게시물이 성공적으로 생성되었습니다.', type: PostEntity })
+    @ApiResponse({ status: 400, description: '잘못된 요청입니다.' })
+    @HttpPost()
+    @HttpCode(HttpStatus.CREATED)
     async create(
-        @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-        createPostDto: CreatePostDto,
+        @Body() createPostDto: CreatePostDto,
     ): Promise<PostEntity> {
         return this.postsService.createPost(createPostDto);
     }
 
-    /**
-     * 모든 블로그 게시물을 조회하는 API 엔드포인트입니다.
-     * @returns 모든 블로그 게시물 목록
-     */
+    @ApiOperation({ summary: '모든 게시물 조회', description: '모든 블로그 게시물 목록을 조회합니다.' })
+    @ApiResponse({ status: 200, description: '성공적으로 조회되었습니다.', type: [PostEntity] })
     @Get()
-    @HttpCode(HttpStatus.OK) // 성공 시 200 OK 응답
+    @HttpCode(HttpStatus.OK)
     async findAll(): Promise<PostEntity[]> {
         return this.postsService.findAllPosts();
     }
 
-    /**
-     * 특정 ID를 가진 블로그 게시물을 상세 조회하는 API 엔드포인트입니다.
-     * 조회 시 조회수를 1 증가시킵니다.
-     * @param id 조회할 게시물의 ID
-     * @returns 조회된 블로그 게시물 객체
-     */
-    @Get(':id') // ID 파라미터를 받는 GET 요청
+    @ApiOperation({ summary: '특정 게시물 상세 조회', description: 'ID로 특정 게시물을 상세 조회하고 조회수를 1 증가시킵니다.' })
+    @ApiParam({ name: 'id', description: '조회할 게시물의 ID', type: Number })
+    @ApiResponse({ status: 200, description: '성공적으로 조회되었습니다.', type: PostEntity })
+    @ApiResponse({ status: 404, description: '게시물을 찾을 수 없습니다.' })
+    @Get(':id')
     @HttpCode(HttpStatus.OK)
     async findOne(@Param('id') id: number): Promise<PostEntity> {
         const post = await this.postsService.findOne(id);
@@ -61,30 +55,26 @@ export class PostsController {
         return post;
     }
 
-    /**
-     * 특정 ID를 가진 블로그 게시물을 수정하는 API 엔드포인트입니다.
-     * @param id 수정할 게시물의 ID
-     * @param updatePostDto 게시물 업데이트 데이터
-     * @returns 수정된 블로그 게시물 객체
-     */
-    @Patch(':id') // PATCH 메서드 사용 (부분 업데이트에 적합)
+    @ApiOperation({ summary: '게시물 수정', description: 'ID로 특정 게시물을 수정합니다.' })
+    @ApiParam({ name: 'id', description: '수정할 게시물의 ID', type: Number })
+    @ApiResponse({ status: 200, description: '성공적으로 수정되었습니다.', type: PostEntity })
+    @ApiResponse({ status: 404, description: '게시물을 찾을 수 없습니다.' })
+    @Patch(':id')
     @HttpCode(HttpStatus.OK)
     async update(
         @Param('id') id: number,
-        @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-        updatePostDto: UpdatePostDto,
+        @Body() updatePostDto: UpdatePostDto,
     ): Promise<PostEntity> {
         return this.postsService.updatePost(id, updatePostDto);
     }
 
-    /**
-     * 특정 ID를 가진 블로그 게시물을 삭제하는 API 엔드포인트입니다.
-     * @param id 삭제할 게시물의 ID
-     * @returns 성공 메시지 객체
-     */
+    @ApiOperation({ summary: '게시물 삭제', description: 'ID로 특정 게시물을 삭제합니다.' })
+    @ApiParam({ name: 'id', description: '삭제할 게시물의 ID', type: Number })
+    @ApiResponse({ status: 200, description: '성공적으로 삭제되었습니다.' })
+    @ApiResponse({ status: 404, description: '게시물을 찾을 수 없습니다.' })
     @Delete(':id')
-    @HttpCode(HttpStatus.OK) // 204 No Content 대신 200 OK로 변경하여 바디에 메시지 포함
-    async remove(@Param('id') id: number): Promise<{ message: string }> { // 반환 타입 변경
+    @HttpCode(HttpStatus.OK)
+    async remove(@Param('id') id: number): Promise<{ message: string }> {
         await this.postsService.deletePost(id);
         return { message: `ID가 ${id}인 게시물이 성공적으로 삭제되었습니다.` };
     }
