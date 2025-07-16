@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f670c114-a849-4ea3-9112-f90e9599220a" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/modules/posts/dto/create-post.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/posts/posts.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/posts/posts.entity.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/posts/posts.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/posts/posts.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,11 +31,11 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="develop" />
-                    <option name="lastUsedInstant" value="1751891909" />
+                    <option name="lastUsedInstant" value="1752502667" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1751891908" />
+                    <option name="lastUsedInstant" value="1752502663" />
                   </RecentBranch>
                 </list>
               </option>
@@ -85,8 +77,8 @@
     "nodejs_package_manager_path": "npm",
     "npm.start.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "yarn:package.json:prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Users/kwon-ohhyun/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "settings.editor.selected.configurable": "settings.typescriptcompiler",
+    "ts.external.directory.path": "/Users/kwon-ohhyun/Desktop/BlogServer-Nest/.yarn/sdks/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
