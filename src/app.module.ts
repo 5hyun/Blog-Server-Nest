@@ -1,7 +1,5 @@
 /** src/app.module.ts */
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'; // TypeOrmModuleOptions 임포트 추가
@@ -38,7 +36,5 @@ import { PostsModule } from './modules/posts/posts.module';
     }),
       PostsModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
